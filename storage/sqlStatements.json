@@ -1,0 +1,18 @@
+{
+    "getAll" : ["select id, name, author, topic, type from book "],
+    "get" : [
+        "select id, name, author, topic, type from computer",
+        "where id = ?"
+        
+    ],
+    "insert" : [
+        "insert into book (id, name, author, topic, type)",
+        "values(?, ?, ?, ?, ?)"
+    ],
+    "update" : [
+        "update book set name = ?, author = ?, topic = ?, type = ?",
+        "where id = ?"
+    ],
+    "remove" : ["delete from book where id = ?"],
+    "primaryKey" : "id"
+}
