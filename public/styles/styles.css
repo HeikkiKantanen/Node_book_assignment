@@ -1,0 +1,38 @@
+main {
+	display: grid;
+	align-items: center;
+	justify-items: center;
+}
+
+table {
+	border-collapse: collapse;
+	margin-bottom: 1em;
+}
+
+table,
+th,
+td {
+	border: solid black 1px;
+	padding: 0.5em;
+}
+
+thead {
+	background-color: khaki;
+}
+
+button {
+	margin: 1em;
+	font-family: sans-serif;
+	width: 13em;
+	height: 2em;
+}
+
+.fields div {
+	display: grid;
+	font-weight: bold;
+	margin: 1em;
+}
+
+.info {
+	border: solid green 2px;
+}
