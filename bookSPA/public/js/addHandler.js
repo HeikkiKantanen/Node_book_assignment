@@ -20,9 +20,9 @@
 	} // end of init
 
 	async function send() {
-		console.log("clicked");
+		clearMessagearea();
 		const book = {
-			id: idField.value,
+			bookId: +idField.value,
 			name: nameField.value,
 			author: authorField.value,
 			topic: topicField.value,
@@ -41,10 +41,10 @@
 			const data = await fetch("/add", options);
 			const resultJson = await data.json();
 			if (resultJson.message) {
-				updateMessageArea(resultJson.message, resultJson.type);
+				updateMessagearea(resultJson.message, resultJson.type);
 			}
 		} catch (error) {
-			updateMessageArea(error.message, "error");
+			updateMessagearea(error.message, "error");
 		}
 	}
 })();

@@ -1,18 +1,17 @@
 {
-    "getAll" : ["select id, name, author, topic, type from book "],
-    "get" : [
-        "select id, name, author, topic, type from computer",
-        "where id = ?"
-        
-    ],
-    "insert" : [
-        "insert into book (id, name, author, topic, type)",
-        "values(?, ?, ?, ?, ?)"
-    ],
-    "update" : [
-        "update book set name = ?, author = ?, topic = ?, type = ?",
-        "where id = ?"
-    ],
-    "remove" : ["delete from book where id = ?"],
-    "primaryKey" : "id"
+	"getAll": ["select bookId, name, author, topic, type from book"],
+	"get": [
+		"select bookId, name, author, topic, type from book",
+		"where bookId = ?"
+	],
+	"insert": [
+		"insert into book (bookId, name, author, topic, type)",
+		"values(?,?,?,?,?)"
+	],
+	"update": [
+		"update book set name = ?, author = ?, topic = ?, type = ?",
+		"where bookId = ?"
+	],
+	"remove": ["delete from book where bookId = ?"],
+	"primaryKey": "bookId"
 }

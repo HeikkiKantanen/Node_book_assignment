@@ -13,11 +13,11 @@
 
 	async function send() {
 		clearMessagearea();
-		const id = inputField.value;
+		const bookId = inputField.value;
 		try {
 			const options = {
 				method: "POST",
-				body: JSON.stringify({ id }),
+				body: JSON.stringify({ bookId }),
 				headers: {
 					"Content-Type": "application/json",
 				},

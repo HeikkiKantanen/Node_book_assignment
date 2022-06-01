@@ -1,27 +1,28 @@
 {
-    "host" : "localhost",
-    "port" : 3306,
-    "admin" : "controller",
-    "adminpassword" : "secret",
-    "user" : "mia",
-    "userpassword" : "sjmJOXDA",
-    "dropuser" : true,
-    "debug" : true,
-    "database" : "bookdb",
-    "tables" : [
-        {
-            "tableName" : "book",
-            "columns" : [
-                "bookID integer not null primary key",
-                "name varchar (50) not null",
-                "author varchar(18) not null",
-                "topic varchar(13) not null",
-                "type varchar (18) not null"
-            ],
-            "data": [
-                [1, "LOTR", "Tolkien", "war", "fantasy" ],
-                [2, "Harry Hole", "Nesbo", "crime", "thriller"]
-            ]
-        }
-    ]
+	"host": "localhost",
+	"port": 3306,
+	"admin": "controller",
+	"adminpassword": "secret",
+	"user": "mia",
+	"password": "sjmJOXDA",
+	"dropuser": true,
+	"debug": true,
+	"database": "bookdb",
+	"tables": [
+		{
+			"tableName": "book",
+			"columns": [
+				"bookId integer not null primary key",
+				"name varchar (50) not null",
+				"author varchar(18) not null",
+				"topic varchar(13) not null",
+				"type varchar (18) not null"
+			],
+			"data": [
+				[1, "LOTR", "Tolkien", "war", "fantasy"],
+				[2, "Harry Hole", "Nesbo", "crime", "thriller"],
+				[3, "Slash autobiography", "Slash", "rock-n-roll", "biography"]
+			]
+		}
+	]
 }

@@ -2,21 +2,20 @@
 
 const { CODES, TYPE, MESSAGES } = require("./statusCodes");
 
-const Database = require("./database");
-
-const options = require("./databaseOptions.json");
-
 const sql = require("./sqlStatements.json");
-
-const { toArrayInsert, toArrayUpdate } = require("./parameters");
 
 const getAllSql = sql.getAll.join(" ");
 const getSql = sql.get.join(" ");
 const insertSql = sql.insert.join(" ");
 const updateSql = sql.update.join(" ");
 const removeSql = sql.remove.join(" ");
-
 const PRIMARY_KEY = sql.primaryKey;
+
+const { toArrayInsert, toArrayUpdate } = require("./parameters");
+
+const Database = require("./database");
+
+const options = require("./databaseOptions.json");
 
 // console.log(getAllSql);
 // console.log(getSql);
@@ -37,9 +36,10 @@ module.exports = class DataStorage {
 	getAll() {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const result = await this.db.doQuery(getAllSql);
-				resolve(result.queryResult);
-			} catch (err) {
+				const res = await this.db.doQuery(getAllSql);
+				resolve(res.queryResult);
+			} catch (error) {
+				// console.log(error);
 				reject(MESSAGES.PROGRAM_ERROR());
 			}
 		});
@@ -48,14 +48,16 @@ module.exports = class DataStorage {
 	get(key) {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const result = await this.db.doQuery(getSql, [key]);
-				if (result.queryResult.length > 0) {
-					resolve(result.queryResult[0]);
+				const res = await this.db.doQuery(getSql, [key]);
+				if (res.queryResult.length > 0) {
+					resolve(res.queryResult[0]);
 				} else {
 					resolve(MESSAGES.NOT_FOUND(PRIMARY_KEY, key));
 				}
 			} catch (err) {
-				reject.apply(MESSAGES.PROGRAM_ERROR());
+				console.log(error);
+				// reject.apply(MESSAGES.PROGRAM_ERROR());
+				reject(MESSAGES.PROGRAM_ERROR());
 			}
 		});
 	} // end of get
@@ -63,57 +65,63 @@ module.exports = class DataStorage {
 	remove(key) {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const result = await this.db.doQuery(removeSql, [key]);
-				if (result.queryResult.rowsChanged === 1) {
+				const res = await this.db.doQuery(removeSql, [key]);
+				if (res.queryResult.rowsChanged === 1) {
 					resolve(MESSAGES.DELETE_OK(PRIMARY_KEY, key));
 				} else {
 					resolve(MESSAGES.NOT_DELETED(PRIMARY_KEY, key));
 				}
-			} catch (err) {
-				reject(MESSAGES.PROGRAM_ERROR);
+			} catch (error) {
+				console.log(error);
+				reject(MESSAGES.PROGRAM_ERROR());
 			}
 		});
 	} // end of remove
 
-	insert(resource) {
+	insert(data) {
 		return new Promise(async (resolve, reject) => {
 			try {
-				await this.db.doQuery(insertSql, toArrayInsert(resource));
-				resolve(MESSAGES.INSERT_OK(PRIMARY_KEY, resource[PRIMARY_KEY]));
-			} catch (err) {
-				reject(MESSAGES.NOT_INSERTED);
+				await this.db.doQuery(insertSql, toArrayInsert(data));
+				resolve(MESSAGES.INSERT_OK(PRIMARY_KEY, data[PRIMARY_KEY]));
+			} catch (error) {
+				reject(MESSAGES.NOT_INSERTED());
 			}
 		});
 	} // end of insert
 
-	update(key, resource) {
+	update(key, data) {
 		return new Promise(async (resolve, reject) => {
 			try {
-				if (key && resource) {
-					if (resource[PRIMARY_KEY] != key) {
-						reject(MESSAGES.KEYS_DO_NOT_MATCH(key, resource[PRIMARY_KEY], key));
+				if (key && data) {
+					// if (resource[PRIMARY_KEY] != key) {
+					// 	reject(MESSAGES.KEYS_DO_NOT_MATCH(key, resource[PRIMARY_KEY], key));
+					if (data[PRIMARY_KEY] != key) {
+						reject(MESSAGES.KEYS_DO_NOT_MATCH(data[PRIMARY_KEY], key));
 					} else {
-						const resultGet = await this.db.doQuery(getSql, [key]);
-						if (resultGet.queryResult.length > 0) {
-							const result = await this.db.doQuery(
-								updateSql,
-								toArrayUpdate(resource)
-							);
-							if (result.queryResult.rowsChanged === 0) {
-								resolve(MESSAGES.NOT_UPDATED());
+						const fetchData = await this.db.doQuery(getSql, [key]);
+						if (fetchData.queryResult.length > 0) {
+							const res = await this.db.doQuery(updateSql, toArrayUpdate(data));
+							// if (result.queryResult.rowsChanged === 0) {
+							// 	resolve(MESSAGES.NOT_UPDATED());
+							// } else {
+							// 	resolve(MESSAGES.UPDATE_OK(PRIMARY_KEY, resource[PRIMARY_KEY]));
+							// }
+							if (res.queryResult.rowsChanged !== 0) {
+								resolve(MESSAGES.UPDATE_OK(PRIMARY_KEY, data[PRIMARY_KEY]));
 							} else {
-								resolve(MESSAGES.UPDATE_OK(PRIMARY_KEY, resource[PRIMARY_KEY]));
+								resolve(MESSAGES.NOT_UPDATED());
 							}
 						} else {
-							this.insert(resource)
+							this.insert(data)
 								.then((status) => resolve(status))
-								.catch((err) => reject(err));
+								.catch((error) => reject(error));
 						}
 					}
 				} else {
 					reject(MESSAGES.NOT_UPDATED());
 				}
-			} catch (err) {
+			} catch (error) {
+				console.log(error);
 				reject(MESSAGES.PROGRAM_ERROR());
 			}
 		});

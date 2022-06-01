@@ -11,7 +11,7 @@
 			const resultset = document.getElementById("resultset");
 			for (let book of books) {
 				const tr = document.createElement("tr");
-				tr.appendChild(createCell(book.id));
+				tr.appendChild(createCell(book.bookId));
 				tr.appendChild(createCell(book.name));
 				tr.appendChild(createCell(book.author));
 				tr.appendChild(createCell(book.topic));

@@ -4,6 +4,11 @@ main {
 	justify-items: center;
 }
 
+label,
+input {
+	margin: 0.5em;
+}
+
 table {
 	border-collapse: collapse;
 	margin-bottom: 1em;

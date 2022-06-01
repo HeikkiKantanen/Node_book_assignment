@@ -1,7 +1,7 @@
 "use strict";
 
 const toArrayInsert = (book) => [
-	+book.id,
+	+book.bookId,
 	book.name,
 	book.author,
 	book.topic,
@@ -15,7 +15,7 @@ const toArrayUpdate = (book) => [
 	book.author,
 	book.topic,
 	book.type,
-	+book.id,
+	+book.bookId,
 ];
 
 module.exports = { toArrayInsert, toArrayUpdate };
